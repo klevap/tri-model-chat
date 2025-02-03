@@ -1,0 +1,260 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Tri-Model Chat</title>
+
+  <!-- Font Awesome Icons -->
+  <link
+    rel="stylesheet"
+    href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css"
+  />
+  
+  <!-- Custom Stylesheet -->
+  <link rel="stylesheet" href="css/style.css" />
+
+  <!-- Markdown Library (marked) -->
+  <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+</head>
+<body>
+  <!-- Container for displaying all user questions -->
+  <div id="user-question-container">
+    <strong>Questions:</strong><br>
+    <div id="user-question-display"></div>
+  </div>
+
+  <!-- Three columns for responses from each model -->
+  <div class="three-columns">
+    <!-- Column 1 -->
+    <div class="column" id="column-1">
+      <div class="column-header">
+        <span>Model 1</span>
+        <button
+          class="collapse-toggle"
+          title="Collapse / Expand"
+          onclick="toggleColumnCollapse(1)"
+          aria-label="Collapse or Expand Column 1"
+        >
+          <i class="fas fa-arrows-alt-v" aria-hidden="true"></i>
+        </button>
+      </div>
+      <div class="chatbox" id="chatbox1"></div>
+    </div>
+
+    <!-- Column 2 -->
+    <div class="column" id="column-2">
+      <div class="column-header">
+        <span>Model 2</span>
+        <button
+          class="collapse-toggle"
+          title="Collapse / Expand"
+          onclick="toggleColumnCollapse(2)"
+          aria-label="Collapse or Expand Column 2"
+        >
+          <i class="fas fa-arrows-alt-v" aria-hidden="true"></i>
+        </button>
+      </div>
+      <div class="chatbox" id="chatbox2"></div>
+    </div>
+
+    <!-- Column 3 -->
+    <div class="column" id="column-3">
+      <div class="column-header">
+        <span>Model 3</span>
+        <button
+          class="collapse-toggle"
+          title="Collapse / Expand"
+          onclick="toggleColumnCollapse(3)"
+          aria-label="Collapse or Expand Column 3"
+        >
+          <i class="fas fa-arrows-alt-v" aria-hidden="true"></i>
+        </button>
+      </div>
+      <div class="chatbox" id="chatbox3"></div>
+    </div>
+  </div>
+
+  <!-- Controls: buttons and input area -->
+  <div class="controls-container">
+    <div id="typing-indicator">
+      <i class="fas fa-circle-notch fa-spin" aria-hidden="true"></i> Bots are typing...
+    </div>
+
+    <div id="input-area">
+      <!-- Три выпадающих меню для выбора моделей -->
+      <select id="model-select-1" class="model-select" title="Model 1">
+        <!-- Значения по умолчанию (Gemini + OpenRouter – будут обновлены после загрузки JSON) -->
+        <optgroup label="Gemini Models">
+          <option value="gemini-1.5-pro-latest" class="gemini-option">1.5-pro-latest</option>
+          <option value="gemini-1.5-flash" class="gemini-option">1.5-flash</option>
+          <option value="gemini-1.5-flash-8b" class="gemini-option">1.5-flash-8b</option>
+          <option value="gemini-2.0-flash-exp" class="gemini-option">2.0-flash-exp</option>
+          <option value="gemini-exp-1206" class="gemini-option">exp-1206</option>
+        </optgroup>
+        <optgroup label="OpenRouter Models" id="or-optgroup-1">
+          <option value="openrouter/gpt-3.5-turbo" class="openrouter-option">gpt-3.5-turbo</option>
+          <option value="openrouter/gpt-3.5-turbo-16k" class="openrouter-option">gpt-3.5-turbo-16k</option>
+          <option value="openrouter/gpt-4" class="openrouter-option">gpt-4</option>
+        </optgroup>
+      </select>
+
+      <select id="model-select-2" class="model-select" title="Model 2">
+        <optgroup label="Gemini Models">
+          <option value="gemini-1.5-pro-latest" class="gemini-option">1.5-pro-latest</option>
+          <option value="gemini-1.5-flash" class="gemini-option">1.5-flash</option>
+          <option value="gemini-1.5-flash-8b" class="gemini-option">1.5-flash-8b</option>
+          <option value="gemini-2.0-flash-exp" class="gemini-option">2.0-flash-exp</option>
+          <option value="gemini-exp-1206" class="gemini-option">exp-1206</option>
+        </optgroup>
+        <optgroup label="OpenRouter Models" id="or-optgroup-2">
+          <option value="openrouter/gpt-3.5-turbo" class="openrouter-option">gpt-3.5-turbo</option>
+          <option value="openrouter/gpt-3.5-turbo-16k" class="openrouter-option">gpt-3.5-turbo-16k</option>
+          <option value="openrouter/gpt-4" class="openrouter-option">gpt-4</option>
+        </optgroup>
+      </select>
+
+      <select id="model-select-3" class="model-select" title="Model 3">
+        <optgroup label="Gemini Models">
+          <option value="gemini-1.5-pro-latest" class="gemini-option">1.5-pro-latest</option>
+          <option value="gemini-1.5-flash" class="gemini-option">1.5-flash</option>
+          <option value="gemini-1.5-flash-8b" class="gemini-option">1.5-flash-8b</option>
+          <option value="gemini-2.0-flash-exp" class="gemini-option">2.0-flash-exp</option>
+          <option value="gemini-exp-1206" class="gemini-option">exp-1206</option>
+        </optgroup>
+        <optgroup label="OpenRouter Models" id="or-optgroup-3">
+          <option value="openrouter/gpt-3.5-turbo" class="openrouter-option">gpt-3.5-turbo</option>
+          <option value="openrouter/gpt-3.5-turbo-16k" class="openrouter-option">gpt-3.5-turbo-16k</option>
+          <option value="openrouter/gpt-4" class="openrouter-option">gpt-4</option>
+        </optgroup>
+      </select>
+
+      <div id="message-input-wrapper">
+        <textarea id="message-input" placeholder="Enter your message..."></textarea>
+      </div>
+      <button id="send-button" class="action-button primary" title="Send" aria-label="Send Message">
+        <i class="fas fa-paper-plane" aria-hidden="true"></i>
+      </button>
+
+      <!-- Button to open the template editing modal -->
+      <button id="open-template-modal" class="action-button" title="Edit Template" aria-label="Edit Response Template">
+        <i class="fas fa-magic" aria-hidden="true"></i>
+      </button>
+
+      <!-- Generation Settings button -->
+      <button id="model-params-btn" class="action-button" title="Generation Settings" aria-label="Generation Settings">
+        <i class="fas fa-cog" aria-hidden="true"></i>
+      </button>
+
+      <!-- Clear Chat button -->
+      <button id="clear-chat-btn" class="action-button" title="Clear Chat" aria-label="Clear Chat">
+        <i class="fas fa-trash-alt" aria-hidden="true"></i>
+      </button>
+
+      <!-- Export History button -->
+      <button id="export-json-btn" class="action-button" title="Export History (JSON)" aria-label="Export Chat History as JSON">
+        <i class="fas fa-save" aria-hidden="true"></i>
+      </button>
+    </div>
+  </div>
+
+  <!-- Modal window with response improvement template -->
+  <div id="template-modal" class="modal" role="dialog" aria-modal="true" aria-labelledby="template-modal-title">
+    <div class="modal-content">
+      <span class="close" tabindex="0" role="button" aria-label="Close Template Modal">×</span>
+      <label for="improvement-template" id="template-modal-title">Response Improvement Template:</label>
+      <textarea id="improvement-template" style="height:200px;">
+{{userMessage}}
+Below is a preliminary answer provided by a weaker model (it may be incorrect and contain logical errors or inaccuracies) that needs to be improved, but DO NOT refer to it directly:
+“{{modelAnswer}}”
+Please write an improved answer.
+If the preliminary answer contains a variable N (e.g. N = 7), increment its value by 1 (e.g. N = 8) and include the updated value after your answer; if not found, write N = 1
+      </textarea>
+    </div>
+  </div>
+
+  <!-- Modal window "Generation Settings" (включает выбор OpenRouter моделей) -->
+  <div id="model-params-modal" class="modal" role="dialog" aria-modal="true" aria-labelledby="params-modal-title">
+    <div class="modal-content">
+      <span class="close params-close" tabindex="0" role="button" aria-label="Close Settings Modal">×</span>
+      <h3 id="params-modal-title">Generation Settings</h3>
+      <div class="param-row">
+        <label for="temperature-input" title="How diverse the responses are (0.0 means deterministic)">Temperature:</label>
+        <input type="number" id="temperature-input" step="0.1" value="0.0" />
+      </div>
+      <div class="param-row">
+        <label for="topk-input" title="Limits selection to the top K most probable tokens">Top-K:</label>
+        <input type="number" id="topk-input" step="1" value="1" />
+      </div>
+      <div class="param-row">
+        <label for="topp-input" title="Limits the cumulative probability of chosen tokens">Top-P:</label>
+        <input type="number" id="topp-input" step="0.05" value="0.95" />
+      </div>
+      <div class="param-row">
+        <label for="max-tokens-input" title="Maximum number of tokens in the response">Max Output Tokens:</label>
+        <input type="number" id="max-tokens-input" step="1" value="4096" />
+      </div>
+      <hr />
+      <h4>Additional Settings</h4>
+      <div class="param-row">
+        <label for="sound-checkbox" title="Enable/disable sound on completion">Sound on Completion:</label>
+        <input type="checkbox" id="sound-checkbox" />
+      </div>
+      <div class="param-row">
+        <label title="Select operation mode: Automatic or Manual">Operation Mode:</label>
+        <select id="mode-select">
+          <option value="automatic">Automatic</option>
+          <option value="manual">Manual</option>
+        </select>
+      </div>
+      <hr />
+      <h4>API Keys</h4>
+      <div class="param-row">
+        <label for="gemini-api-key-input">Gemini API Key:</label>
+        <input type="password" id="gemini-api-key-input" placeholder="Enter Gemini API key..." />
+      </div>
+      <div class="param-row">
+        <label for="openai-api-key-input">OpenRouter API Key:</label>
+        <input type="password" id="openai-api-key-input" placeholder="Enter OpenRouter API key..." />
+      </div>
+      <!-- Секция для OpenRouter моделей -->
+      <hr />
+      <h4>OpenRouter Models</h4>
+      <div class="param-row">
+        <label for="modelFile">Загрузить JSON файл с моделями OpenRouter:</label>
+        <input type="file" id="modelFile" accept=".json">
+      </div>
+      <div class="param-row">
+        <label for="orFamilySelect">Выберите семейство:</label>
+        <select id="orFamilySelect"></select>
+      </div>
+      <!-- Секция сохранения настроек -->
+      <hr />
+      <h4>Save Settings Options</h4>
+      <div class="param-row">
+        <label>Save Settings:</label>
+        <input type="radio" name="settingsPersistence" id="settings-session" value="session" checked>
+        <label for="settings-session">Session Only</label>
+        <input type="radio" name="settingsPersistence" id="settings-persistent" value="persistent">
+        <label for="settings-persistent">Persistent (Cookies)</label>
+      </div>
+      <div class="param-row">
+        <button id="reset-settings-btn" class="action-button" title="Reset to default settings" aria-label="Reset to default settings">Reset to Defaults</button>
+      </div>
+      <button id="save-params-btn" class="action-button primary" style="border-radius: 8px;">Save</button>
+    </div>
+  </div>
+
+  <!-- Modal window for displaying last request info -->
+  <div id="request-modal" class="modal" role="dialog" aria-modal="true" aria-labelledby="request-modal-title">
+    <div class="modal-content">
+      <span class="close request-close" tabindex="0" role="button" aria-label="Close Request Modal">×</span>
+      <h3 id="request-modal-title">Last Request Information</h3>
+      <pre id="request-modal-text" style="white-space: pre-wrap;"></pre>
+    </div>
+  </div>
+
+  <script src="js/utils.js"></script>
+  <script src="js/app.js"></script>
+</body>
+</html>

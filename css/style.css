@@ -1,0 +1,366 @@
+:root {
+  --primary-color: #2196f3;
+  --secondary-color: #e3f2fd;
+  --accent-color: #1976d2;
+  --text-color: #333;
+  --background-color: #f5f5f5;
+  --border-radius: 12px;
+  --transition: all 0.3s ease;
+}
+
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  font-family: "Segoe UI", system-ui, -apple-system, sans-serif;
+  line-height: 1.6;
+  color: var(--text-color);
+  background-color: var(--background-color);
+  margin: 0;
+  padding: 20px;
+  width: 100%;
+}
+
+/* Container for displaying all user questions */
+#user-question-container {
+  margin-bottom: 20px;
+  background-color: #fff;
+  border-radius: var(--border-radius);
+  padding: 10px;
+  border: 1px solid #ddd;
+  box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+}
+#user-question-display > div {
+  margin-bottom: 8px;
+  font-weight: bold;
+  color: var(--text-color);
+}
+
+/* Three columns */
+.three-columns {
+  display: flex;
+  gap: 20px;
+  margin-bottom: 20px;
+  width: 100%;
+}
+.column {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+  position: relative;
+  transition: var(--transition);
+}
+.column.collapsed {
+  flex: 0 0 auto;
+  width: 50px;
+}
+.column.collapsed .chatbox {
+  display: none;
+}
+.column-header {
+  padding: 10px;
+  text-align: center;
+  font-weight: bold;
+  position: relative;
+  background-color: #fff;
+  border-radius: var(--border-radius);
+  box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+}
+.collapse-toggle {
+  position: absolute;
+  right: 10px;
+  top: 10px;
+  cursor: pointer;
+  background: none;
+  border: none;
+  font-size: 1em;
+  opacity: 0.7;
+  transition: var(--transition);
+}
+.collapse-toggle:hover {
+  opacity: 1;
+  transform: scale(1.1);
+}
+
+/* Chatbox */
+.chatbox {
+  height: auto;
+  max-height: 60vh;
+  overflow-y: auto;
+  padding: 2px;
+  scroll-behavior: smooth;
+  flex-grow: 1;
+}
+
+.message {
+  display: block;
+  margin-bottom: 20px;
+  animation: fadeIn 0.3s ease-in;
+  position: relative;
+  width: 100%;
+}
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(10px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+.message-text-wrapper {
+  flex-grow: 1;
+  max-width: 100%;
+  display: flex;
+  align-items: center;
+  width: 100%;
+  position: relative;
+}
+.message-text {
+  padding: 15px;
+  border-radius: var(--border-radius);
+  box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+  transition: var(--transition);
+  flex-grow: 1;
+  max-width: 100%;
+  word-break: break-word;
+  overflow-wrap: break-word;
+  white-space: normal;
+}
+.user .message-text {
+  background-color: var(--primary-color);
+  color: white;
+}
+.bot .message-text {
+  background-color: #ffffff;
+  color: var(--text-color);
+}
+.message-text.editing {
+  background-color: #fff9c4;
+}
+
+/* Плавающая кнопка для показа информации о запросе */
+.request-info-inline {
+  position: absolute;
+  top: 5px;
+  right: 5px;
+  background: rgba(255,255,255,0.7);
+  border: none;
+  cursor: pointer;
+  font-size: 0.8em;
+  display: none;
+}
+.message-text-wrapper:hover .request-info-inline {
+  display: block;
+}
+
+.controls-wrapper {
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+  margin-top: 5px;
+  gap: 10px;
+}
+
+#typing-indicator {
+  color: var(--primary-color);
+  font-style: italic;
+  margin: 10px 0;
+  display: none;
+  text-align: center;
+}
+
+#input-area {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  align-items: center;
+  justify-content: flex-start;
+  margin-bottom: 15px;
+}
+
+.model-select {
+  padding: 12px;
+  border-radius: var(--border-radius);
+  border: 1px solid #ddd;
+  background-color: white;
+  cursor: pointer;
+  transition: var(--transition);
+}
+.model-select:hover {
+  border-color: var(--primary-color);
+}
+
+#message-input-wrapper {
+  flex: 1 1 300px;
+  position: relative;
+}
+#message-input {
+  width: 100%;
+  padding: 12px;
+  border: 1px solid #ddd;
+  border-radius: var(--border-radius);
+  font-size: 1em;
+  transition: var(--transition);
+  resize: vertical;
+  min-height: 48px;
+  max-height: 200px;
+}
+#message-input:focus {
+  outline: none;
+  border-color: var(--primary-color);
+  box-shadow: 0 0 0 2px rgba(33,150,243,0.2);
+}
+
+.action-button {
+  padding: 10px;
+  border: none;
+  border-radius: 50%;
+  background-color: #757575;
+  color: white;
+  cursor: pointer;
+  transition: var(--transition);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.action-button:hover {
+  background-color: #616161;
+  transform: translateY(-1px);
+}
+.action-button.primary {
+  background-color: var(--primary-color);
+}
+.action-button.primary:hover {
+  background-color: var(--accent-color);
+}
+
+.controls-container {
+  text-align: center;
+  margin-bottom: 20px;
+}
+
+/* Modal windows */
+.modal {
+  display: none;
+  position: fixed;
+  z-index: 9999;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  overflow: auto;
+  background-color: rgba(0,0,0,0.5);
+}
+.modal-content {
+  background-color: #fff;
+  margin: 10% auto;
+  padding: 20px;
+  border-radius: var(--border-radius);
+  width: 80%;
+  max-width: 600px;
+  position: relative;
+}
+.modal-content .close,
+.modal-content .params-close,
+.modal-content .request-close {
+  position: absolute;
+  top: 10px;
+  right: 15px;
+  font-size: 1.4em;
+  cursor: pointer;
+}
+.modal-content label {
+  font-weight: bold;
+}
+.modal-content textarea {
+  width: 100%;
+  padding: 10px;
+  margin-top: 5px;
+  border: 1px solid #ddd;
+  border-radius: var(--border-radius);
+  font-family: inherit;
+  font-size: 0.9em;
+  resize: vertical;
+}
+
+/* Generation settings (in modal) */
+.param-row {
+  display: flex;
+  align-items: center;
+  margin-bottom: 10px;
+}
+.param-row label {
+  width: 160px;
+  font-weight: normal;
+}
+
+/* Стили для OpenRouter и Gemini моделей в <select> */
+.gemini-option {
+  background-color: #f0f8ff; /* светло-голубой */
+  color: #000;
+}
+.openrouter-option {
+  background-color: #e6ffe6; /* светло-зелёный */
+  color: #000;
+}
+
+/* Responsive */
+@media (max-width: 900px) {
+  .three-columns { flex-direction: column; }
+  .column { margin-bottom: 20px; }
+  .chatbox { max-height: 40vh; }
+  .column.collapsed { width: 100%; }
+}
+  
+/* Common class for copy, regenerate, edit buttons */
+.control-button {
+  background: none;
+  border: none;
+  font-size: 1em;
+  color: #888;
+  cursor: pointer;
+  transition: 0.2s;
+  margin-left: 6px;
+  border-radius: 6px;
+  padding: 4px;
+}
+.control-button:hover {
+  background-color: #f0f0f0;
+  color: #555;
+}
+/* Code block styling */
+.code-block-wrapper {
+  position: relative;
+  margin: 1em 0;
+}
+.code-block-wrapper pre {
+  padding: 8px 12px;
+  background: #f8f8f8;
+  border-radius: 6px;
+  overflow: auto;
+}
+.code-copy-btn {
+  position: absolute;
+  top: 8px;
+  right: 8px;
+  background: #eee;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  cursor: pointer;
+  padding: 5px;
+  color: #555;
+  font-size: 0.9em;
+  opacity: 0.7;
+  transition: 0.2s;
+}
+.code-copy-btn:hover {
+  opacity: 1;
+  background: #ddd;
+}
+  
+/* Стили для секции настроек OpenRouter моделей (в модальном окне) */
+#model-params-modal .param-row label {
+  width: auto;
+  margin-right: 10px;
+}
