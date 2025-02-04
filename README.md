@@ -64,7 +64,7 @@ Tri-Model Chat is a web application that enables users to interact with three di
 
 ## License
 
-This project is licensed under the [CC BY 4.0 License](LICENSE).
+This project is licensed under the [MIT license](LICENSE).
 
 ## Acknowledgments
 
