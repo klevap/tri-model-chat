@@ -276,6 +276,7 @@ function addBotMessageToColumn(text, colIndex, index) {
   const messageText = document.createElement("div");
   messageText.classList.add("message-text");
   messageText.innerHTML = renderMarkdown(text);
+  addCopyButtonsToCodeBlocks(messageText); // Add copy buttons to code blocks
 
   // Плавающая кнопка для показа запроса
   const infoBtn = document.createElement("button");
@@ -426,6 +427,7 @@ function toggleEditMode(messageDiv, originalText, colIndex) {
   if (isEditing) {
     const editedText = messageTextDiv.querySelector("textarea").value;
     messageTextDiv.innerHTML = renderMarkdown(editedText);
+    addCopyButtonsToCodeBlocks(messageTextDiv); // Add copy buttons after re-rendering
     messageTextDiv.classList.remove("editing");
     const index = parseInt(messageDiv.dataset.index);
     if (!isNaN(index) && conversationHistory[index]) {
